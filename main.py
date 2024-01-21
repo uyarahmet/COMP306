@@ -146,3 +146,71 @@ def read_secretary(secretary_id: int):
         raise HTTPException(status_code=404, detail="Secretary not found")
 
     return {"secretary_data": secretary_data}
+
+### 5 ADVANCED QUERIES ###
+
+# 1:
+
+# 2: Find the average price per area for each property type (Home, Land, Hotel, Commercial Property).
+@app.get("/average_price_per_area")
+def get_average_price_per_area():
+    connection, cursor = create_connection()
+    query = """
+    SELECT
+        CASE
+            WHEN Home.Hid IS NOT NULL THEN 'Home'
+            WHEN Land.Lid IS NOT NULL THEN 'Land'
+            WHEN Hotel.Htid IS NOT NULL THEN 'Hotel'
+            WHEN Commercial_Property.Cid IS NOT NULL THEN 'Commercial Property'
+        END AS property_type,
+        AVG(Listing.Lsprice_per_area) AS avg_price_per_area
+    FROM Listing
+    LEFT JOIN Home ON Listing.Lsid = Home.Hid
+    LEFT JOIN Land ON Listing.Lsid = Land.Lid
+    LEFT JOIN Hotel ON Listing.Lsid = Hotel.Htid
+    LEFT JOIN Commercial_Property ON Listing.Lsid = Commercial_Property.Cid
+    GROUP BY property_type;
+    """
+    cursor.execute(query)
+    average_price_per_area = cursor.fetchall()
+    close_connection(connection, cursor)
+
+    return {"average_price_per_area": average_price_per_area}
+
+
+
+# 3: Retrieve the details of homes (including apartment and villa information) that have a balcony and a pool.
+@app.get("/homes_with_balcony_and_pool")
+def get_homes_with_balcony_and_pool():
+    connection, cursor = create_connection()
+    query = """
+    SELECT *
+    FROM Home
+    LEFT JOIN Apartment ON Home.Hid = Apartment.Hid
+    LEFT JOIN Villa ON Home.Hid = Villa.Hid
+    WHERE Apartment.Abalcony_exists = TRUE AND Villa.Vpool_exists = TRUE;
+    """
+    cursor.execute(query)
+    homes_with_balcony_and_pool = cursor.fetchall()
+    close_connection(connection, cursor)
+
+    return {"homes_with_balcony_and_pool": homes_with_balcony_and_pool}
+
+
+# 4: Find the total number of listings for each city.
+@app.get("/total_listings_per_city")
+def get_total_listings_per_city():
+    connection, cursor = create_connection()
+    query = """
+    SELECT Hcity, COUNT(*) AS total_listings
+    FROM Home
+    JOIN Listing ON Home.Hid = Listing.Lsid
+    GROUP BY Hcity;
+    """
+    cursor.execute(query)
+    total_listings_per_city = cursor.fetchall()
+    close_connection(connection, cursor)
+
+    return {"total_listings_per_city": total_listings_per_city}
+
+# 5: 

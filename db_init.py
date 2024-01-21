@@ -9,7 +9,7 @@ config = {
 }
 
 connection = mysql.connector.connect(**config)
-cursor = connection.cursor()
+cursor = connection.cursor(buffered=True)
 
 create_table_query = """
 CREATE TABLE Admin (
@@ -17,20 +17,6 @@ CREATE TABLE Admin (
     Fname VARCHAR(30),
     Lname VARCHAR(30),
     PRIMARY KEY (Id)
-);
-
-CREATE TABLE Listing (
-    Lsid INT NOT NULL,
-    Lsdate DATE,
-    Lsdays_since_published INT,
-    Lsprice REAL,
-    Lsprice_per_area REAL,
-    Lsfrom_who VARCHAR(90),
-    Lsland_title_status VARCHAR(128),
-    Lsdescription VARCHAR(500),
-    Id INT,
-    PRIMARY KEY (Lsid),
-    FOREIGN KEY (Id) REFERENCES Admin(Id)
 );
 
 CREATE TABLE Home (
@@ -52,6 +38,21 @@ CREATE TABLE Home (
     PRIMARY KEY(Hid)
 );
 
+CREATE TABLE Listing (
+    Lsid INT NOT NULL,
+    Lsdate DATE,
+    Lsdays_since_published INT,
+    Lsprice REAL,
+    Lsprice_per_area REAL,
+    Lsfrom_who VARCHAR(90),
+    Lsland_title_status VARCHAR(128),
+    Lsdescription VARCHAR(500),
+    Id INT,
+    PRIMARY KEY (Lsid),
+    FOREIGN KEY (Id) REFERENCES Admin(Id)
+);
+
+-- Continue with tables having foreign key dependencies
 CREATE TABLE Land (
     Lid INT NOT NULL,
     Larea REAL,
@@ -80,6 +81,7 @@ CREATE TABLE Commercial_Property (
 );
 
 CREATE TABLE Apartment (
+	Hid INT NOT NULL,
     Afloor_num_of_whole_apt INT,
     Afloor_num_of_listing INT,
     Abalcony_exists BOOLEAN,
@@ -91,6 +93,7 @@ CREATE TABLE Apartment (
 );
 
 CREATE TABLE Villa (
+	Hid INT NOT NULL, 
     Vpool_exists BOOLEAN,
     Vtotal_floor_num INT,
     Vopen_area REAL,
@@ -99,11 +102,13 @@ CREATE TABLE Villa (
 );
 
 CREATE TABLE Realtor (
+	Id INT NOT NULL,
     PRIMARY KEY(Id),
     FOREIGN KEY (Id) REFERENCES Admin(Id)
 );
 
 CREATE TABLE Secretary (
+	Id INT NOT NULL,
     PRIMARY KEY(Id),
     FOREIGN KEY (Id) REFERENCES Admin(Id)
 );
@@ -123,10 +128,16 @@ CREATE TABLE Contains (
 );
 """
 
-cursor.execute(create_table_query)
+try:
+    cursor.execute(create_table_query, multi=True)
 
-connection.commit()
-cursor.close()
-connection.close()
+except mysql.connector.Error as err:
+    print(f"Error: {err}")
+
+finally:
+    connection.commit()
+    cursor.close()
+    connection.close()
+
 
 
