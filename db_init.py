@@ -1,6 +1,7 @@
 import mysql.connector
 
-config = {
+# Kindly change these with your credentials in your local environment.
+config = { 
     "user": "root",
     "password": "Bilal-ahmet23",
     "host": "localhost",
