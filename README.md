@@ -4,7 +4,7 @@
 # Guide on how to run this backend project 
 
 ## Install requirements.txt 
-1. Initially create a python virtual environment using <code>python -m venv [venv_name]</code>
+1. Initially create a python virtual environment using <code>python -m venv [venv_name]</code> (name it venv or add your environments name to gitignore)
 2. Activate the virtual environment. (the activate script is inside the virtual environment folder /Scripts/activate)
 3. Install the dependencies by running <code>pip install -r requirements.txt</code>
 
