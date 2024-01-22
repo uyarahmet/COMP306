@@ -165,10 +165,11 @@ def get_average_price_per_area():
         END AS property_type,
         AVG(Listing.Lsprice_per_area) AS avg_price_per_area
     FROM Listing
-    LEFT JOIN Home ON Listing.Lsid = Home.Hid
-    LEFT JOIN Land ON Listing.Lsid = Land.Lid
-    LEFT JOIN Hotel ON Listing.Lsid = Hotel.Htid
-    LEFT JOIN Commercial_Property ON Listing.Lsid = Commercial_Property.Cid
+    LEFT JOIN Contains ON Listing.Lsid = Contains.Lsid
+    LEFT JOIN Home ON Contains.Hid = Home.Hid
+    LEFT JOIN Land ON Contains.Lsid = Land.Lid
+    LEFT JOIN Hotel ON Contains.Lsid = Hotel.Htid
+    LEFT JOIN Commercial_Property ON Contains.Lsid = Commercial_Property.Cid
     GROUP BY property_type;
     """
     cursor.execute(query)
@@ -203,8 +204,9 @@ def get_total_listings_per_city():
     connection, cursor = create_connection()
     query = """
     SELECT Hcity, COUNT(*) AS total_listings
-    FROM Home
-    JOIN Listing ON Home.Hid = Listing.Lsid
+    FROM Listing
+    JOIN Contains ON Listing.Lsid=Contains.Lsid
+    JOIN Home ON Contains.Hid = Home.Hid
     GROUP BY Hcity;
     """
     cursor.execute(query)
