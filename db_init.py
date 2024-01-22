@@ -120,7 +120,7 @@ CREATE TABLE Contains (
     Cid INT,
     Htid INT,
     Lid INT,
-    PRIMARY KEY(Lsid, Hid, Cid, Htid, Lid),
+    PRIMARY KEY(Lsid),
     FOREIGN KEY (Lsid) REFERENCES Listing(Lsid),
     FOREIGN KEY (Hid) REFERENCES Home(Hid),
     FOREIGN KEY (Cid) REFERENCES Commercial_Property (Cid),
