@@ -34,13 +34,13 @@ const Analytics = () => {
         Average Price of Homes with More Than Two Bathrooms and Inside Site
       </button>
       <button className={styles.analyticsButton} onClick={() => fetchData("/cities_more_than_two_home_listing_with_brutmt140")}>
-        Average Price of Homes with More Than Two Bathrooms and Inside Site
+        Cities More Than Two Home Listings With Brut Area More Than 140
       </button>
       <button className={styles.analyticsButton} onClick={() => fetchData("/top_five_largest_homes_for_sale_in_city")}>
-        Average Price of Homes with More Than Two Bathrooms and Inside Site
+        Top Five Largest Homes For Sale in City
       </button>
       <button className={styles.analyticsButton} onClick={() => fetchData("/avg_listing_prices_per_neighborhood")}>
-        Average Price of Homes with More Than Two Bathrooms and Inside Site
+        Average Price of Listings For Each Existing Neighborhood
       </button>
 
       {result && (
