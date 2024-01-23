@@ -294,3 +294,69 @@ def average_price_of_homes_with_more_than_twobathrooms_and_inside_site():
     close_connection(connection, cursor)
 
     return {"average_price_of_homes_with_more_than_twobathrooms_and_inside_site": average_price_of_homes_with_more_than_twobathrooms_and_inside_site}
+
+
+@app.get("/cities_more_than_two_home_listing_with_brutmt140")
+def get_cities_more_than_two_home_listing_with_brutmt140():
+    connection, cursor = create_connection()
+    
+    query = """
+    SELECT Home.Hcity, COUNT(Listing.Lsid) AS NumberOfListings
+    FROM Home
+    JOIN Contains ON Home.Hid = Contains.Hid
+    JOIN Listing ON Contains.Lsid = Listing.Lsid
+    WHERE Home.Harea_brut > 140
+    GROUP BY Home.Hcity
+    HAVING COUNT(Listing.Lsid) > 2;
+    """
+    
+    cursor.execute(query)
+    cities_more_than_two_home_listing_with_brutmt140 = cursor.fetchall()
+    
+    close_connection(connection, cursor)
+
+    return {"cities_more_than_two_home_listing_with_brutmt140": cities_more_than_two_home_listing_with_brutmt140}
+
+@app.get("/top_five_largest_homes_for_sale_in_city")
+def get_top_five_largest_homes_for_sale_in_city():
+    connection, cursor = create_connection()
+    
+    query = """
+    SELECT Home.Hcity, Home.Hid, Home.Harea_brut, Home.Hroom_num
+    FROM Home
+    JOIN Contains ON Home.Hid = Contains.Hid
+    JOIN Listing ON Contains.Lsid = Listing.Lsid
+    WHERE Home.Hfor_sale = TRUE
+    ORDER BY Home.Hcity, Home.Harea_brut DESC
+    LIMIT 5;
+    """
+    
+    cursor.execute(query)
+    top_five_largest_homes_for_sale_in_city = cursor.fetchall()
+    
+    close_connection(connection, cursor)
+
+    return {"top_five_largest_homes_for_sale_in_city": top_five_largest_homes_for_sale_in_city}
+
+@app.get("/avg_listing_prices_per_neighborhood")
+def get_avg_listing_prices_per_neighborhood():
+    connection, cursor = create_connection()
+    
+    query = """
+    SELECT Home.Hneighborhood, AVG(Listing.Lsprice) AS AvgPrice
+    FROM Listing
+    JOIN Contains ON Listing.Lsid = Contains.Lsid
+    JOIN Home ON Contains.Hid = Home.Hid
+    GROUP BY Home.Hneighborhood;
+    """
+    
+    cursor.execute(query)
+    avg_listing_prices_per_neighborhood = cursor.fetchall()
+    
+    close_connection(connection, cursor)
+
+    return {"avg_listing_prices_per_neighborhood": avg_listing_prices_per_neighborhood}
+
+
+
+    
