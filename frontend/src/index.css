@@ -1,0 +1,140 @@
+/* google-fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600&display=swap');
+
+/* tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  color: #232b2b;
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity))
+}
+
+.bg-blur {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(3px);
+}
+
+@keyframes slideLeftToRight {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.text-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.text-inner {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.header-text {
+  width: 100%;
+  animation: slideLeftToRight 15s linear infinite;
+}
+
+.header-text:hover {
+  animation-play-state: paused;
+}
+
+.nav-item {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  transition: text-shadow 0.8s ease, color 1s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: rgb(120 113 108);
+  text-shadow: 0 1px 1px #232b2b;
+}
+
+.call-now {
+  transition: transform 0.3s ease;
+}
+
+.call-now:hover {
+  transform: translateX(-10px);
+}
+
+.call-now-desktop {
+  transition: transform 0.3s ease;
+}
+
+.call-now-desktop:hover {
+  transform: translateY(6px);
+}
+
+.collapse-list.show {
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.search-bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lead-h1 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.search-icon-container {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.card-shadow {
+  box-shadow: rgb(209, 209, 213) 0px 5px 15px;
+}
+
+.card-scale {
+  transform: scale(1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-scale:hover {
+  transform: scale(1.05);
+}
+
+.font-times {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.sell-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
